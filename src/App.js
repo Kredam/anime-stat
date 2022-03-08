@@ -16,18 +16,17 @@ function App() {
 
   useEffect(() => { 
     const username = new URLSearchParams(window.location.search).get("username")
-    console.log("logged value: " + logged)
+    console.log(username)
     if(localStorage.getItem("username")){
       isLogged(() => true)
     }
     if(username !== null) {
       localStorage.setItem("username", username)
-      console.log(localStorage.getItem("username"))
       isLogged(() => true)
     }
     axios({
       method:"POST",
-      url:"http://mal-readme.herokuapp.com/animelist/stats",
+      url:"http://localhost:8080/animelist/stats",
       headers:{
         'Content-Type' : 'application/json'
       },
@@ -55,25 +54,31 @@ function App() {
         </div>
       </>
     :
-    <div class="table-div">
-      <table class="styled-table">
-        <thead>
-          <tr>
-            <th><img src='MyAnimeList_Logo.png' height={30} width={30} /></th>
-            <th>Title</th>
-          </tr>
-        </thead>
-        <tbody>
-          {animes.map(x => {
-            return <tr>
-              <td><img src={x.node.main_picture.medium}  width={30} height={40}/></td>
-              <td>{x.node.title}</td>
-            </tr>
+    // <div class="table-div">
+    //   <table class="styled-table">
+    //     <thead>
+    //       <tr>
+    //         <th><img src='MyAnimeList_Logo.png' height={30} width={30} /></th>
+    //         <th>Title</th>
+    //       </tr>
+    //     </thead>
+    //     <tbody>
+          <div class="gallery">
+            {animes.map((x,index) => {
+            return( 
+                <figure class={"gallery__item gallery__item--"+index}>
+                    <img src={x.node.main_picture.medium} class="gallery__img" />
+                </figure>)
+            // return <tr>
+            //   <td><img src={x.node.main_picture.medium}  width={30} height={40}/></td>
+            //   <td>{x.node.title}</td>
+            // </tr>
           })
-          }   
-        </tbody>
-      </table>
-    </div>
+          }</div>
+
+    //     </tbody>
+    //   </table>
+    // </div>
     )
   );
 }
