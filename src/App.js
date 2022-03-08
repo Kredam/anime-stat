@@ -25,10 +25,9 @@ function App() {
       console.log(localStorage.getItem("username"))
       isLogged(() => true)
     }
-    console.log(localStorage.getItem("username"))
     axios({
       method:"POST",
-      url:"http://localhost:8080/animelist/stats",
+      url:"http://mal-readme.herokuapp.com/animelist/stats",
       headers:{
         'Content-Type' : 'application/json'
       },
