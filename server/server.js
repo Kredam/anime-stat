@@ -6,7 +6,6 @@ const path = require('path');
 const sha256 = require("js-sha256").sha256
 const { initializeApp, cert } = require('firebase-admin/app');
 const { getFirestore } = require('firebase-admin/firestore');
-const serviceAccount = require('./mal-readme-firebase-adminsdk-seybw-c9c3b94c50.json')
 require('dotenv').config({path: path.resolve('./.env')});
 
 const CLIENT_ID = process.env.REACT_APP_MAL_CLIENT_ID;
