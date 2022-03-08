@@ -19,7 +19,7 @@ app.use(cors({ credentials: true, origin: true }));
 app.use(bodyparser.json())
 // Initialize Firebase
 initializeApp({
-  credential: cert(serviceAccount)
+  credential: cert(process.env.FIREBASE_ADMIN)
 });
 const db = getFirestore()
 
@@ -49,6 +49,10 @@ async function fetchMyAnimeListStats(access_token, username){
     return res.data
   })
 }
+
+app.get('/', (req, res) => {
+  res.send('Working')
+})
 
 app.post("/animelist/stats", async(req, res) => {
   const acces_token = (await db.collection("users").doc(req.body.username).get()).data().access_token
