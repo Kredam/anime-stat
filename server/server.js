@@ -20,7 +20,7 @@ app.use(cors({ credentials: true, origin: true }));
 app.use(bodyparser.json())
 // Initialize Firebase
 initializeApp({
-  credential: cert(serviceAccount)
+  credential: cert(JSON.parse(Buffer.from(process.env.FIREBASE, 'base64').toString('ascii')))
 });
 const db = getFirestore()
 
