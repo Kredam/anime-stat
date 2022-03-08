@@ -3,6 +3,8 @@ const axios = require("axios");
 var cors = require("cors");
 const bodyparser = require('body-parser')
 const path = require('path');
+const base64 = require(`base64-js`)
+const serviceAccount = require('./mal-readme-firebase-adminsdk-seybw-c9c3b94c50.json')
 const sha256 = require("js-sha256").sha256
 const { initializeApp, cert } = require('firebase-admin/app');
 const { getFirestore } = require('firebase-admin/firestore');
@@ -18,7 +20,7 @@ app.use(cors({ credentials: true, origin: true }));
 app.use(bodyparser.json())
 // Initialize Firebase
 initializeApp({
-  credential: cert(process.env.FIREBASE_ADMIN)
+  credential: cert(serviceAccount)
 });
 const db = getFirestore()
 
@@ -33,11 +35,23 @@ async function fetchUserInfo(user_access_token){
   })
 }
 
+async function generate_new_token(refresh_token) {
+  const dataFormated = `client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&code_verifier=${CODE_CHALLENGE}&grant_type=refresh_token&refresh_token=${refresh_token}`
+  await axios({
+    method: "POST",
+    url: "https://myanimelist.net/v1/oauth2/token",
+    data: dataFormated,
+    headers: {
+      'Content-Type':'application/x-www-form-urlencoded',
+    },
+  }).then((res) => console.log(res))
+}
+
 async function fetchMyAnimeListStats(access_token, username){
   return await axios.get(`https://api.myanimelist.net/v2/users/@me/animelist?`, {
     params:{
       status:"completed",
-      limit: 10,
+      limit: 5,
       sort:"list_score"
     },
     headers:{
@@ -54,7 +68,8 @@ app.get('/', (req, res) => {
 })
 
 app.post("/animelist/stats", async(req, res) => {
-  const acces_token = (await db.collection("users").doc(req.body.username).get()).data().access_token
+  const user_data = await db.collection("users").doc(req.body.username).get()
+  const acces_token = user_data.data().access_token
   const stats = await fetchMyAnimeListStats(acces_token, req.body.username)
 
   return res.send(stats)
@@ -71,14 +86,20 @@ app.get("/oauth/redirect", (req, res) => {
     headers: {
       'Content-Type':'application/x-www-form-urlencoded',  
     },
-  }).then(async(response) => {
-    console.log(response)
-    username = await fetchUserInfo(response.data.access_token)
-    await db.collection("users").doc(username).set(response.data)
+  }).then(async (response) => {
+    console.log(response.data)
+    const access_token = response.data.access_token
+    username = await fetchUserInfo(access_token)
+    db.collection("users").doc(username).set(response.data)
     res.redirect(
-      `http://mal-readme.herokuapp.com/username=${username}`
-      );
-    })
+        `http://localhost:3000?username=${username}`
+    );
+
+    }).catch((err) => {
+      if(err.response.data.hint === "Authorization code has expired"){
+
+    }
+  })
   });
   
   const PORT = process.env.PORT || 8080;
