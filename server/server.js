@@ -90,7 +90,7 @@ app.get("/oauth/redirect", (req, res) => {
     username = await fetchUserInfo(access_token)
     db.collection("users").doc(username).set(response.data)
     res.redirect(
-        `https://mal-readme.herokuapp.com?username=${username}`
+        `https://mal-readme.herokuapp.com/?username=${username}`
     );
 
     }).catch((err) => {
