@@ -76,7 +76,6 @@ app.post("/animelist/stats", async(req, res) => {
 app.get("/oauth/redirect", (req, res) => {
   const code = req.query.code;
   const dataFormated = `client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&grant_type=authorization_code&code=${code}&code_verifier=${CODE_CHALLENGE}`
-  console.log(process.env.config)
   axios({
     method: "POST",
     url: "https://myanimelist.net/v1/oauth2/token",
@@ -90,7 +89,7 @@ app.get("/oauth/redirect", (req, res) => {
     username = await fetchUserInfo(access_token)
     db.collection("users").doc(username).set(response.data)
     res.redirect(
-        `https://mal-readme.herokuapp.com/?username=${username}`
+        `https://mal-readme.vercel.app/?username=${username}`
     );
 
     }).catch((err) => {
