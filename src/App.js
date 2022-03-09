@@ -26,7 +26,7 @@ function App() {
     }
     axios({
       method:"POST",
-      url:"http://localhost:8080/animelist/stats",
+      url:"https://mal-readme.herokuapp.com/animelist/stats",
       headers:{
         'Content-Type' : 'application/json'
       },
