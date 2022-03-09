@@ -54,31 +54,27 @@ function App() {
         </div>
       </>
     :
-    // <div class="table-div">
-    //   <table class="styled-table">
-    //     <thead>
-    //       <tr>
-    //         <th><img src='MyAnimeList_Logo.png' height={30} width={30} /></th>
-    //         <th>Title</th>
-    //       </tr>
-    //     </thead>
-    //     <tbody>
-          <div class="gallery">
+    <div class="table-div">
+      <table class="styled-table">
+        <thead>
+          <tr>
+            <th><img src='MyAnimeList_Logo.png' height={30} width={30} /></th>
+            <th>Title</th>
+          </tr>
+        </thead>
+        <tbody>
+          {/* <div class="gallery"> */}
             {animes.map((x,index) => {
-            return( 
-                <figure class={"gallery__item gallery__item--"+index}>
-                    <img src={x.node.main_picture.medium} class="gallery__img" />
-                </figure>)
-            // return <tr>
-            //   <td><img src={x.node.main_picture.medium}  width={30} height={40}/></td>
-            //   <td>{x.node.title}</td>
-            // </tr>
+            return <tr>
+              <td><img src={x.node.main_picture.medium}  width={30} height={40}/></td>
+              <td>{x.node.title}</td>
+            </tr>
           })
-          }</div>
+          }
 
-    //     </tbody>
-    //   </table>
-    // </div>
+        </tbody>
+      </table>
+    </div>
     )
   );
 }
