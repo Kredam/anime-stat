@@ -24,19 +24,21 @@ function App() {
       localStorage.setItem("username", username)
       isLogged(() => true)
     }
-    axios({
-      method:"POST",
-      url:"https://mal-readme.herokuapp.com/animelist/stats",
-      headers:{
-        'Content-Type' : 'application/json'
-      },
-      data:{
-        username:localStorage.getItem("username")
-      }
-    }).then((res) => {
-      setAnimes(() => res.data.data)
-          // console.log(JSON.stringify(res, null, 2))
-    })
+    if(localStorage.getItem("username")){
+      axios({
+        method:"POST",
+        url:"https://mal-readme.herokuapp.com/animelist/stats",
+        headers:{
+          'Content-Type' : 'application/json'
+        },
+        data:{
+          username:localStorage.getItem("username")
+        }
+      }).then((res) => {
+        setAnimes(() => res.data.data)
+            // console.log(JSON.stringify(res, null, 2))
+      })
+    }
   }, [])
 
   return (
@@ -58,7 +60,7 @@ function App() {
       <table class="styled-table">
         <thead>
           <tr>
-            <th><img src='MyAnimeList_Logo.png' height={30} width={30} /></th>
+            <th><img src='./MyAnimeList_Logo.png' height={30} width={30} /></th>
             <th>Title</th>
           </tr>
         </thead>
