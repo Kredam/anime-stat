@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react';
 import axios from 'axios'
+import  domtoimage from "dom-to-image"
 import { PieChart, Pie, Legend, Tooltip, ResponsiveContainer } from 'recharts';
 
 function App() {
@@ -35,6 +36,12 @@ function App() {
           username:localStorage.getItem("username")
         }
       }).then((res) => {
+        const node = document.getElementById("top_list")
+        domtoimage.toPng(node).then(function (dataUrl) {
+          var img = new Image()
+          img.src = dataUrl
+          document.body.appendChild(img)
+        })
         setAnimes(() => res.data.data)
             // console.log(JSON.stringify(res, null, 2))
       })
@@ -56,7 +63,7 @@ function App() {
         </div>
       </>
     :
-    <div class="table-div">
+    <div class="table-div" id="top_list">
       <table class="styled-table">
         <thead>
           <tr>
