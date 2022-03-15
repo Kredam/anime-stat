@@ -15,7 +15,7 @@ function App() {
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
 
-  useEffect(() => {
+  useEffect(() => { 
     const username = new URLSearchParams(window.location.search).get("username")
     console.log(username)
     if(localStorage.getItem("username")){
