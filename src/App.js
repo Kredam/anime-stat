@@ -15,7 +15,7 @@ function App() {
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
 
-  useEffect(() => { 
+  useEffect(() => {
     const username = new URLSearchParams(window.location.search).get("username")
     console.log(username)
     if(localStorage.getItem("username")){
@@ -40,7 +40,18 @@ function App() {
         domtoimage.toPng(node).then(function (dataUrl) {
           var img = new Image()
           img.src = dataUrl
-          document.body.appendChild(img)
+          axios("https://mal-readme.herokuapp.com/picture", {
+            method: "POST",
+            headers:{
+              'Content-Type' : 'application/json'
+            },
+            data:{
+              image: img.src
+            }
+          })
+          var a = document.createElement("img")
+          a.src = img.src
+          // document.body.append(a)
         })
         setAnimes(() => res.data.data)
             // console.log(JSON.stringify(res, null, 2))

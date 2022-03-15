@@ -73,6 +73,11 @@ app.post("/animelist/stats", async(req, res) => {
   return res.send(stats)
 })
 
+app.post("/picture", (req, res) => {
+  console.log(req.body)
+  res.status(200).send(req.body.image)
+})
+
 app.get("/oauth/redirect", (req, res) => {
   const code = req.query.code;
   const dataFormated = `client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&grant_type=authorization_code&code=${code}&code_verifier=${CODE_CHALLENGE}`
