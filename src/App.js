@@ -40,6 +40,7 @@ function App() {
         domtoimage.toPng(node).then(function (dataUrl) {
           var img = new Image()
           img.src = dataUrl
+          document.body.innerHTML = ""
           document.body.appendChild(img)
         })
         setAnimes(() => res.data.data)
